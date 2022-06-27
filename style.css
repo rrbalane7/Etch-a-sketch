@@ -1,0 +1,103 @@
+*{
+    box-sizing: border-box;
+    margin:0;
+    padding:0;
+
+}
+
+/* TITLE HEADER AND MENU BAR */
+#main-cont{
+    display:flex;
+    justify-content: center;
+    min-height: 97vh;
+    background:linear-gradient(to left, rgb(216, 216, 231), rgb(227, 227, 212))
+    
+}
+
+#menu-cont{
+    margin-top: 3em;
+    margin-right: 7em;
+    padding:0em 0.5em;
+    width:500px;
+    
+}
+
+#header{
+    margin:1.5em 0;
+    text-align: center;
+    font-size: 2.2rem;
+}
+
+#button-cont{
+    margin: 3em;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items:center;
+    height: 400px;
+}
+
+button{
+    font-size: 1.2rem;
+    padding:0.5em 0.5em;
+    margin-bottom: 0.5em;
+    width:160px;
+}
+
+#grid-config-cont{
+    width: 400px;
+    height: 50px;
+    margin:7em auto;
+    display: flex;
+    align-items: baseline;
+}
+
+#grid-info{
+    margin-right: 50px;
+    text-align: center;
+    justify-content: center;
+    padding:0.5em 0.5em;
+    min-width: 250px;
+    font-size: 1.2rem;
+}
+
+
+
+/* SKETCH PAD */
+
+#sub-pad-cont{
+    margin-top: 2em;
+}
+
+#sketch-pad-cont{
+    display: grid;
+    grid-template-columns: repeat(64,1fr);
+    grid-template-rows: repeat(64,1fr);
+    border: 2px solid black;
+    box-shadow: 10px 10px rgb(165, 182, 239);
+    margin: 0 0;
+    column-gap: 0;
+    row-gap: 0;
+    width: 832px;
+    height: 832px;
+    background-color: #fff;
+}
+
+.grid-box{
+    /* border:0.5px solid magenta; */
+    width: auto;
+    height: auto;
+}
+
+.grid-box:hover{
+    background-color: blue;
+}
+
+
+
+/* Footer */
+footer{
+    text-align: center;
+    padding: 0.5em;
+    background-color: rgba(104, 156, 235, 0.5);
+}
