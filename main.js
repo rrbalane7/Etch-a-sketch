@@ -8,22 +8,30 @@ const eraser = document.querySelector("#eraser")
 const buttons = document.querySelectorAll(".button")
 const color = document.querySelector("#color-mode")
 const cl = document.querySelector("#color-label")
+const black = document.querySelector("#black")
+const random = document.querySelector("#random")
 
 const Default_Color = "#000"
 const Eraser_Color = "#fff"
 const Default_Sides = 64
 let Current_Color = Default_Color;
-let ColorMode_Color;
-let RandomMode_Color;
+// let ColorMode_Color;
+let RandomMode_Color = false;
 
 function setCurrentColor(newColor){
     Current_Color = newColor;
+    RandomMode_Color = false;
 }
 
 
 gridS.onmousemove = (e) => updateGridInfo(e.target.value)
 gridS.onchange = (e) => setGridBoxSides(e.target.value)
 color.onchange = (e) => setCurrentColor(e.target.value)
+black.onclick = () => setCurrentColor(Default_Color)
+
+
+
+
 
 function updateGridInfo(value) {
     gridI.textContent = `Grid Box Sides: ${value} X ${value}`
@@ -38,17 +46,17 @@ function setGridBoxSides(value) {
 clear.addEventListener("click", clearPad)
 reset.addEventListener("click", resetPad)
 eraser.addEventListener("click", eraserActivate)
-// color.addEventListener("click",colorMode)
+random.addEventListener("click", () => RandomMode_Color = true);
 
-// function colorMode(){
-//     setUpGrid(setGridBoxSides.value,Current_Color)    
-// }
+console.log(RandomMode_Color)
 
 function eraserActivate(){
     Current_Color = Eraser_Color;
+    RandomMode_Color = false;
     divBox.addEventListener("mouseover", fillBox);
     divBox.addEventListener("click", () => divBox.style.backgroundColor = Eraser_Color);
     divBox.addEventListener("mousedown", () => divBox.style.backgroundColor = Eraser_Color);
+    
 
 }
 
@@ -58,7 +66,15 @@ function resetPad(){
     Current_Color = Default_Color;
     updateGridInfo(Default_Sides)
     gridS.setAttribute("value",`${Default_Sides}`)
-    
+    RandomMode_Color = false;
+    buttons.forEach((button) => {
+        if (button.classList.contains("button-selected") || 
+        cl.classList.contains("color-selected")){
+            button.classList.remove("button-selected")
+            cl.classList.remove("color-selected")
+        }
+    })
+    color.setAttribute("value","#000000");     
 }
 
 
@@ -66,7 +82,9 @@ function clearPad(){
     const gridBoxes = document.querySelectorAll(".grid-box")
     gridBoxes.forEach((grid) => {
         grid.style.backgroundColor = "";
-    })    
+    })
+
+
 }
 
 buttons.forEach((button) => {
@@ -99,8 +117,8 @@ function setUpGrid(sides = Default_Sides){
         const divBox = document.createElement("div");
         divBox.classList.add("grid-box");
         divBox.addEventListener("mouseover", fillBox);
-        divBox.addEventListener("click", () => divBox.style.backgroundColor = Current_Color);
-        divBox.addEventListener("mousedown", () => divBox.style.backgroundColor = Current_Color);
+        divBox.addEventListener("click", fillBox);
+        divBox.addEventListener("mousedown", fillBox);
         divBox.setAttribute("draggable", "false");
         pad.appendChild(divBox);
         x++;
@@ -119,7 +137,14 @@ document.body.setAttribute("ondrop", "return false");
 
 function fillBox(e) {
     if (e.type === "mouseover" && !isMouseDown) return undefined;
-    else {e.target.style.backgroundColor= Current_Color}
+    else if (RandomMode_Color === true) {
+        let Rnum = Math.floor(Math.random() * 256)
+        let Gnum = Math.floor(Math.random() * 256)
+        let Bnum = Math.floor(Math.random() * 256)
+        e.target.style.backgroundColor = `rgb(${Rnum},${Gnum},${Bnum})`;
+    }
+    else e.target.style.backgroundColor= Current_Color
+    
 }
 
 
