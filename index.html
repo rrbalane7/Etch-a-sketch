@@ -15,17 +15,20 @@
                 <h1>Etch a sketch</h1>
             </div>
             <div id="button-cont">
-                <button type="button">Color Mode</button>
-                <button type="button">Black Mode</button>
-                <button type="button">Random Mode</button>
-                <button type="button">Eraser</button>
+                <label id="color-label" for="color-mode">Color Mode
+                    <input class="button" type="color" id="color-mode">
+                </label>                             
+                <button class="button" type="button">Black Mode</button>
+                <button class="button" type="button">Random Mode</button>
+                <button class="button" id = "eraser" type="button">Eraser</button>
                 <button id="clear" type="button">Clear</button>
+                <button id="reset" type="button">Reset</button>
             </div>
             <div id="grid-config-cont">
-                <label id="grid-info" for="grid-sides">Grid Box Sides:  1 X 1</label>
-                <input class="box-slider" id="grid-sides" name="grid-sides" type="range" 
-                min="1" max="100" step="1" value="1"/>
-            </div>
+                <label id="grid-info" for="grid-sides">Grid Box Sides: 64 X 64</label>
+                <input value="64" class="box-slider" id="grid-sides" name="grid-sides" type="range" 
+                min="4" max="112" step="4" />
+            </div>                
         </div>
         <div id="sub-pad-cont">
             <div id="sketch-pad-cont"></div>

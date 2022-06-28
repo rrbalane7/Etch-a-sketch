@@ -37,11 +37,58 @@
     height: 400px;
 }
 
+#button-cont > label{
+    font-size:1.3rem;
+    width:160px;
+    height: 48px;
+    text-align: center;
+    padding:0.1em;
+    border:1px solid #00000070;
+    background: #ffffff80;
+    border-radius: 2.5px;
+    position: relative;
+    margin-bottom: 0.5em;
+}
+
+#button-cont > label:hover{
+    background-color: #ffffff60;
+}
+
+#color-mode{
+    height:15px;
+    width: 50px;
+    padding:0;
+    position:absolute;
+    top:2em;
+    right:4em;
+    border:none;
+    margin:0;
+}
+
 button{
     font-size: 1.2rem;
     padding:0.5em 0.5em;
     margin-bottom: 0.5em;
     width:160px;
+}
+
+button:hover,
+#color-label:hover,
+#color-mode:hover{
+    cursor: pointer;
+}
+
+
+
+.button-selected{
+    border-color: red;
+    border-style: double;
+    /* background-color: rgb(107, 179, 242); */
+}
+
+.color-selected{
+    text-decoration: underline rgb(27, 7, 7);
+    
 }
 
 #grid-config-cont{
@@ -71,8 +118,8 @@ button{
 
 #sketch-pad-cont{
     display: grid;
-    grid-template-columns: repeat(64,1fr);
-    grid-template-rows: repeat(64,1fr);
+    /* grid-template-columns: repeat(64,1fr);
+    grid-template-rows: repeat(64,1fr); */
     border: 2px solid black;
     box-shadow: 10px 10px rgb(165, 182, 239);
     margin: 0 0;
