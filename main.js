@@ -11,82 +11,40 @@ const cl = document.querySelector("#color-label")
 const black = document.querySelector("#black")
 const random = document.querySelector("#random")
 
-const Default_Color = "#000"
+
+// Storing constant and non-constant values in variables
+const Default_Color = "#000"  
 const Eraser_Color = "#fff"
 const Default_Sides = 64
 let Current_Color = Default_Color;
-// let ColorMode_Color;
-let RandomMode_Color = false;
-
-function setCurrentColor(newColor){
-    Current_Color = newColor;
-    RandomMode_Color = false;
-}
+let RandomMode_Color = false;  // Needed for the if-condition in 'fillBox' function, this will be changed to true once Random button is clicked
+let isMouseDown = false;    //Also needed for the if-condition in 'fillBox' function, Changed to true on mousedown event.
 
 
+//For the overall DOM body, needed to set the dragstart and dragdrop default values to false 
+//This addresses the issue of unintentionally dragging object of grid boxes when in mousedown and mouseover event.
+document.body.setAttribute("ondragstart", "return false"); 
+document.body.setAttribute("ondrop", "return false");
+
+
+//DOM Events to call function using Arrow function operator
 gridS.onmousemove = (e) => updateGridInfo(e.target.value)
 gridS.onchange = (e) => setGridBoxSides(e.target.value)
 color.onchange = (e) => setCurrentColor(e.target.value)
 black.onclick = () => setCurrentColor(Default_Color)
+document.body.onmousedown = () => (isMouseDown = true);
+document.body.onmouseup = () => (isMouseDown = false);
 
 
-
-
-
-function updateGridInfo(value) {
-    gridI.textContent = `Grid Box Sides: ${value} X ${value}`
-}
-
-function setGridBoxSides(value) {
-    resetPad()
-    setUpGrid(value);
-}
-
-
+//Listen to mouse events to execute function
 clear.addEventListener("click", clearPad)
 reset.addEventListener("click", resetPad)
 eraser.addEventListener("click", eraserActivate)
 random.addEventListener("click", () => RandomMode_Color = true);
 
-console.log(RandomMode_Color)
 
-function eraserActivate(){
-    Current_Color = Eraser_Color;
-    RandomMode_Color = false;
-    divBox.addEventListener("mouseover", fillBox);
-    divBox.addEventListener("click", () => divBox.style.backgroundColor = Eraser_Color);
-    divBox.addEventListener("mousedown", () => divBox.style.backgroundColor = Eraser_Color);
-    
-
-}
-
-function resetPad(){
-    pad.innerHTML= "";
-    setUpGrid(Default_Sides);
-    Current_Color = Default_Color;
-    updateGridInfo(Default_Sides)
-    gridS.setAttribute("value",`${Default_Sides}`)
-    RandomMode_Color = false;
-    buttons.forEach((button) => {
-        if (button.classList.contains("button-selected") || 
-        cl.classList.contains("color-selected")){
-            button.classList.remove("button-selected")
-            cl.classList.remove("color-selected")
-        }
-    })
-    color.setAttribute("value","#000000");     
-}
-
-
-function clearPad(){
-    const gridBoxes = document.querySelectorAll(".grid-box")
-    gridBoxes.forEach((grid) => {
-        grid.style.backgroundColor = "";
-    })
-
-
-}
-
+//This adds styling class for the buttons when clicked except for 'Clear' and 'Reset
+//This function lets the 'User' know what mode(The color of the pen) they are currently in.
 buttons.forEach((button) => {
     button.addEventListener("click", () =>{
         buttons.forEach((button) => {
@@ -106,9 +64,66 @@ buttons.forEach((button) => {
 })
 
 
+//Sets the new color selected as the current color
+//Needed for the Color Mode, also sets the random mode boolean to false
+function setCurrentColor(newColor){
+    Current_Color = newColor;
+    RandomMode_Color = false;
+}
+
+//Updates the Grid Box Sides information showing in the screen as the user uses the slider concurrently
+function updateGridInfo(value) {
+    gridI.textContent = `Grid Box Sides: ${value} X ${value}`
+}
+
+//Once the user, onmouse change event in the slider, chooses the preferred number of sides,
+//this calls the 'resetPad' and 'setUpGrid' function
+function setGridBoxSides(value) {
+    resetPad()
+    setUpGrid(value);
+}
 
 
-// Creating the pad boxes grid in the main container
+//When eraser button is clicked, this set the current color to white,
+//also sets the random mode boolean to false
+function eraserActivate(){
+    Current_Color = Eraser_Color;
+    RandomMode_Color = false;    
+}
+
+
+//When the reset button is clicked, this sets the grid box sides, current color to default values,
+//this also sets the random mode boolean to false
+function resetPad(){
+    pad.innerHTML= "";
+    setUpGrid(Default_Sides);
+    Current_Color = Default_Color;
+    updateGridInfo(Default_Sides)
+    gridS.setAttribute("value",`${Default_Sides}`)    //Should set the value back to default value but the slider interface doesnt go back to default value.
+    RandomMode_Color = false;
+    buttons.forEach((button) => {
+        if (button.classList.contains("button-selected") || 
+        cl.classList.contains("color-selected")){
+            button.classList.remove("button-selected")
+            cl.classList.remove("color-selected")
+        }
+    })
+    color.setAttribute("value","#000000");          //Should set the color value back to default value which is black, but the color picker interface doesnt go back to default value.
+}
+
+//When clear button is clicked, removes the filled color of grid boxes.
+function clearPad(){
+    const gridBoxes = document.querySelectorAll(".grid-box")
+    gridBoxes.forEach((grid) => {
+        grid.style.backgroundColor = "";
+    })
+
+
+}
+
+
+
+//Creates the sketch pad(grid-box) and listens to mouse events to call the 'fillBox' function
 function setUpGrid(sides = Default_Sides){
     pad.style.gridTemplateColumns = `repeat(${sides},1fr)`
     pad.style.gridTemplateRows = `repeat(${sides},1fr)` 
@@ -127,14 +142,7 @@ function setUpGrid(sides = Default_Sides){
 
 }
 
-
-
-let isMouseDown = false;
-document.body.onmousedown = () => (isMouseDown = true);
-document.body.onmouseup = () => (isMouseDown = false);
-document.body.setAttribute("ondragstart", "return false"); //Thank you Stackoverflow
-document.body.setAttribute("ondrop", "return false");
-
+//Fills the boxes with color depending on the mode(color of the pen) on certain mouse events.
 function fillBox(e) {
     if (e.type === "mouseover" && !isMouseDown) return undefined;
     else if (RandomMode_Color === true) {
@@ -147,7 +155,6 @@ function fillBox(e) {
     
 }
 
+//When the browser window loads, the setupGrid function is called with the default sides as the value passed on the parameter.
+window.onload = () => setUpGrid(Default_Sides)
 
-window.onload = () =>{
-    setUpGrid(Default_Sides)
-}
